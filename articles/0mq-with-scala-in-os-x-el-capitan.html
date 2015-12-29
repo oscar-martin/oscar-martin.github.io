@@ -98,7 +98,7 @@ omartin.me            </a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>I recently read about <a href="http://zeromq.org">ZeroMQ</a> and got hooked on it. So I decided to try it out by using Scala. This is just a simple "Hello ZMQ from Scala" tutorial to be run on OS X (El Capitan). It requires the <code>libzmq</code> to be installed and to have either the <a href="https://github.com/zeromq/jzmq">Java binding </a> or the <a href="https://github.com/valotrading/zeromq-scala-binding">Scala binding</a> installed too. I am going to use for this post the JZMQ binding.</p>
+                <p>I recently read about <a href="http://zeromq.org">ZeroMQ</a> and got hooked on it. So I decided to try it out by using Scala. This is just a simple "Hello ZMQ from Scala" tutorial to be run on OS X (El Capitan). It requires the <code>libzmq</code> to be installed and to have either the <a href="https://github.com/zeromq/jzmq">Java binding (JZMQ)</a> or the <a href="https://github.com/valotrading/zeromq-scala-binding">Scala binding</a> installed too. I am going to use for this post the JZMQ binding.</p>
 <h4>Pre-requisites</h4>
 <p>The first thing that must be done is to <code>make</code> zeromq library from source code. In order to so, you must ensure you have some dependencies installed, that can be installed using <a href="http://brew.sh/">Homebrew</a> in case of not having them:</p>
 <ul>
@@ -156,12 +156,12 @@ omartin.me            </a>
 
 
 <h4>Create the "Hello ZQM" application</h4>
-<p>We have already installed all the requisites for being able to write and run (assuming you also have JVM installed) our first Scala project on top of ZMQ. I have create a GitHub repository in where to find the project. It is a <code>sbt</code> project so you should have it installed. Otherwise, you can install it right now by using brew:</p>
+<p>We have already installed all the requisites for being able to write and run (assuming you also have JVM installed) our first Scala project on top of ZMQ. I have create a GitHub repository where you can find the project. It is a <code>sbt</code> project so you should have it installed. Otherwise, you can install it right now by using brew:</p>
 <div class="highlight"><pre>    brew install sbt
 </pre></div>
 
 
-<p>If you typed the commands as they appeared in the tutorial, your working folder should be <code>zeromq</code>. This is not important though but this way it keeps things ordered. Now, clone the git repository and run the client and server. You should have to open two shell sessions in order to run each of them simultaneously. I am using <a href="https://www.iterm2.com/">iTerm</a> as the terminal application although you can use the one that ships Apple.</p>
+<p>If you typed the commands as they appeared in the tutorial, your working folder should be <code>zeromq</code>. This is not important though but this way it keeps things ordered. Now, clone the git repository and run the client and server. You should open two shell sessions in order to run each of them simultaneously. I am using <a href="https://www.iterm2.com/">iTerm</a> as the terminal application although you can use the one that Apple ships.</p>
 <p>On a first shell script in the <code>zeromq</code> working dir we should clone the git repository and also run sbt:</p>
 <div class="highlight"><pre>    git clone https://github.com/oscar-martin/Hello0MQ.git
     cd Hello0MQ
@@ -206,7 +206,7 @@ omartin.me            </a>
 
 
 <p>In the second shell session (client):</p>
-<div class="highlight"><pre>    &gt; run
+<div class="highlight"><pre>    &gt; run localhost
 </pre></div>
 
 
@@ -242,7 +242,7 @@ omartin.me            </a>
 
 
 <p>Once execute, you should <code>exit</code> the sbt project in each session in order to run it again. Otherwise, you will have an <code>“UnsatisfiedLinkError: Native Library already loaded in another classloader</code> error.</p>
-<p>So I hope you have been able to launch it without any problem. I do not really like to install in the Mac a lot of different software packages just for prototyping purposes. Then, I am going to start working on an easier approach: to prepare a Docker image with all the requisites on it and to use it to run my Hello0MQ project on it. </p>
+<p>So I hope you have been able to launch it without any problem. I do not really like to install in the Mac a lot of different software packages just for prototyping purposes. Then, I am going to start working on an easier approach: to prepare a Docker image with all the requisites on it and to use it to run my Hello0MQ project on it.</p>
             </div>
             <!-- /.entry-content -->
         </article>
