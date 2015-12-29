@@ -103,7 +103,7 @@ omartin.me            </a>
                 </div>
                 <h4>Using Docker instead of polluting our environment</h4>
 <p>I wrote an article about how to use ZeroMQ with Scala in OS X but there is no need of polluting our system with a bunch of internal libraries which are only required for building ZeroMQ. So I decided to create a docker image with all that process bundled into a shippable and ready-to-use docker container.
-The idea is simple, I want to develop my programs in my favorite (local) IDE but to run it in an environment with all the required infrastructure containerized. I have already created a sample <a href="https://github.com/oscar-martin/Hello0MQ">Hello0MQ project</a> that I can use to test the idea. So first thing to do was to create that nicely packed docker image that can be found <a href="https://hub.docker.com/r/cappa22/zeromq-scala-sbt/">here</a>. This includes the ZeroMQ library v4.1.4 and also the JZMQ and SBT. Then, when I want to execute my program, I can use a mapped volume to expose my project from my system to the docker container that will run it. The unique downside I found when doing this is that I cannot compile the code locally as I do not have the JZMQ binding installed (so the zmq.jar is not present). But I can do in one command but using the container as you will see.</p>
+The idea is simple, I want to develop my programs in my favorite (local) IDE but to run it in an environment with all the required infrastructure containerized. I have already created a sample <a href="https://github.com/oscar-martin/Hello0MQ">Hello0MQ project</a> that I can use to test the idea. So first thing to do was to create that nicely packed docker image that can be found <a href="https://hub.docker.com/r/oscarmartin/zeromq-scala-sbt/">here</a>. This includes the ZeroMQ library v4.1.4 and also the JZMQ and SBT. Then, when I want to execute my program, I can use a mapped volume to expose my project from my system to the docker container that will run it. The unique downside I found when doing this is that I cannot compile the code locally as I do not have the JZMQ binding installed (so the zmq.jar is not present). But I can do in one command but using the container as you will see.</p>
 <p>This guide assumes you have installed <code>docker</code> (I am using v1.9.1) and <code>docker-machine</code> (I am using v0.5.1) running on OS X (El Capitan).</p>
 <p>Create a virtualbox instance with docker engine running on it. Inside the VM we will run our programs:</p>
 <div class="highlight"><pre>    docker-machine create -d virtualbox --virtualbox-memory 4096 --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.9.0/boot2docker.iso dm-zmq
@@ -116,7 +116,7 @@ The idea is simple, I want to develop my programs in my favorite (local) IDE but
 </pre></div>
 
 
-<p>This way, each <code>docker</code> command will be using the docker engine running on the VM named <code>dm-zmq</code>. As already said, we are going to use an image called <a href="https://hub.docker.com/r/cappa22/zeromq-scala-sbt/">zeromq-scala-sbt</a>. This image has already installed the <code>libzmq</code> and <code>libjzmq</code> libraries in <code>/usr/local/lib</code> and <code>zmq.jar</code> java package in <code>/usr/local/share/java</code>. Those path will be needed in order to create use ZeroMQ in our Scala project (<code>zmq.jar</code> will be required in your <code>build.sbt</code> to declare the dependency).</p>
+<p>This way, each <code>docker</code> command will be using the docker engine running on the VM named <code>dm-zmq</code>. As already said, we are going to use an image called <a href="https://hub.docker.com/r/oscarmartin/zeromq-scala-sbt/">zeromq-scala-sbt</a>. This image has already installed the <code>libzmq</code> and <code>libjzmq</code> libraries in <code>/usr/local/lib</code> and <code>zmq.jar</code> java package in <code>/usr/local/share/java</code>. Those path will be needed in order to create use ZeroMQ in our Scala project (<code>zmq.jar</code> will be required in your <code>build.sbt</code> to declare the dependency).</p>
 <p>In order to test this, I have created a <a href="https://github.com/oscar-martin/Hello0MQ">GitHub repository</a> with a sample project to play with. This project is composed of a couple of process, a client and a server which are using REQ/REP ZeroMQ pattern to exchange messages on port <code>5555</code>. If you look at the <code>build.sbt</code>, you will realize that it is using this declaration:</p>
 <div class="highlight"><pre>unmanagedJars in Compile ++=
     (file(&quot;/usr/local/share/java/&quot;) * &quot;zmq.jar&quot;).classpath
@@ -135,7 +135,7 @@ The idea is simple, I want to develop my programs in my favorite (local) IDE but
 In the first session (you could keep using the same session you have used so far), run this:</p>
 <div class="highlight"><pre>    eval $(docker-machine env dm-zmq)
     cd ~/zeromq-scala-sbt
-    docker run -it --name server -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt -p 5555:5555 cappa22/zeromq-scala-sbt
+    docker run -it --name server -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt -p 5555:5555 oscarmartin/zeromq-scala-sbt
 </pre></div>
 
 
@@ -155,7 +155,7 @@ In the first session (you could keep using the same session you have used so far
 <p>Create a second shell session and run this:</p>
 <div class="highlight"><pre>    eval $(docker-machine env dm-zmq)
     cd ~/zeromq-scala-sbt
-    docker run -it --name client -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt cappa22/zeromq-scala-sbt
+    docker run -it --name client -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zeromq-scala-sbt
 </pre></div>
 
 
@@ -183,12 +183,12 @@ In the first session (you could keep using the same session you have used so far
 <p>Then, execute the same commands as before but use the container IP instead of the VM IP. You can also remove the port mapping from the <code>server</code> docker container as it is not needed in that test (this means to remove the <code>-p 5555:5555</code> from the command that start the <code>server</code> container). It should work. A more realistic example would be to create two different VM (virtualboxes locally) and to create a docker cluster (Swarm) between them and finally to create a docker-network where to "plug" your docker containers in order for them to use that network.</p>
 <p>Once you execute it, you should exit the docker container and run it again instead of using the same SBT session because otherwise it will throw <code>“UnsatisfiedLinkError: Native Library already loaded in another classloader</code> which seems to be related to the way SBT handles the runtime environment.</p>
 <p>Finally, if all you want to do is to compile your source code, just issue this command:</p>
-<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt cappa22/zeromq-scala-sbt compile
+<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zeromq-scala-sbt compile
 </pre></div>
 
 
-<p>You can use <code>cappa22/zeromq-scala-sbt</code> image as a SBT process already configured to load ZeroMQ libraries:</p>
-<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt cappa22/zeromq-scala-sbt &lt;sbt command&gt;
+<p>You can use <code>oscarmartin/zeromq-scala-sbt</code> image as a SBT process already configured to load ZeroMQ libraries:</p>
+<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zeromq-scala-sbt &lt;sbt command&gt;
 </pre></div>
 
 
