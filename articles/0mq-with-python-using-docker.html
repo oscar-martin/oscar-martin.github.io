@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>0MQ with Python using Docker - omartin.me</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="/articles/0mq-with-python-using-docker.html">
+
+        <meta name="author" content="omartin" />
+        <meta name="keywords" content="zeromq,python,docker" />
+        <meta name="description" content="I am planning to dive into the details on ZMQ patterns, sockets and all other fancy stuff zeromq offers so I need to find the best way to write disposable code which allows me to get the learn-test-understand loop as quick as possible. I find the best language for doing ..." />
+
+        <meta property="og:site_name" content="omartin.me" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="0MQ with Python using Docker"/>
+        <meta property="og:url" content="/articles/0mq-with-python-using-docker.html"/>
+        <meta property="og:description" content="I am planning to dive into the details on ZMQ patterns, sockets and all other fancy stuff zeromq offers so I need to find the best way to write disposable code which allows me to get the learn-test-understand loop as quick as possible. I find the best language for doing ..."/>
+        <meta property="article:published_time" content="2015-12-30" />
+            <meta property="article:section" content="misc" />
+            <meta property="article:tag" content="zeromq" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:tag" content="docker" />
+            <meta property="article:author" content="omartin" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+        <link href="/extra/custom.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+omartin.me            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/pages/contact.html">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/articles/0mq-with-python-using-docker.html"
+                       rel="bookmark"
+                       title="Permalink to 0MQ with Python using Docker">
+                        0MQ with Python using Docker
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-12-30T22:00:00+01:00"> Wed 30 December 2015</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tags/zeromq.html">zeromq</a>
+        /
+	<a href="/tags/python.html">python</a>
+        /
+	<a href="/tags/docker.html">docker</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>I am planning to dive into the details on ZMQ patterns, sockets and all other fancy stuff <code>zeromq</code> offers so I need to find the best way to write disposable code which allows me to get the <em>learn-test-understand</em> loop as quick as possible. I find the best language for doing that quick&amp;dirty PoCs (or tests) is <code>python</code> so I have created a <a href="https://hub.docker.com/r/oscarmartin/zmq-pyzmq/">docker image</a> with the required <code>zeromq</code> libraries and the <a href="https://pyzmq.readthedocs.org/en/latest/index.html">Python binding</a> installed. This way I can write code in my local environment without needing to install zeromq-related things and I can run it in a ready-to-use (and also throw away) environment.   </p>
+<h4>Creating a Docker Machine to work with</h4>
+<p>This guide assumes you have installed <code>docker</code> (I am using v1.9.1) and <code>docker-machine</code> (I am using v0.5.1) running on OS X (El Capitan).
+Create a <code>virtualbox</code> instance with docker engine running on it. Inside the VM we will run our programs:</p>
+<div class="highlight"><pre>    docker-machine create -d virtualbox dm-pyzmq
+</pre></div>
+
+
+<p>Then, set up the shell environment variables to point to the just created docker machine:</p>
+<div class="highlight"><pre>    eval $(docker-machine env dm-pyzmq)
+</pre></div>
+
+
+<p>This way, each <code>docker</code> command will be using the docker engine running on the VM named <code>dm-pyzmq</code>.</p>
+<h4>Test the environment</h4>
+<p>As already said, we are going to use an image called <a href="https://hub.docker.com/r/oscarmartin/zmq-pyzmq/">zmq-pyzmq</a>. We also need to create a couple of simple python programs that I am going to use for testing the workflow. I am going to use this basic <a href="https://github.com/zeromq/pyzmq/tree/master/examples/chat">chat program</a>. In order to make things easier, I am going to write them here. So first, create a new folder and a couple of files, like this:</p>
+<div class="highlight"><pre>    cd pyzmq-test
+    touch display.py
+    touch prompt.py
+</pre></div>
+
+
+<p>The content of the files should be:</p>
+<ul>
+<li>display.py:</li>
+</ul>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">addrs</span><span class="p">):</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="n">socket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUB</span><span class="p">)</span>
+    <span class="n">socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="n">addrs</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Connecting to: &quot;</span><span class="p">,</span> <span class="n">addr</span>
+        <span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">recv_pyobj</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">msg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;usage: display.py &lt;address&gt; [,&lt;address&gt;...]&quot;</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+
+
+<ul>
+<li>prompt.py:</li>
+</ul>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">who</span><span class="p">):</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="n">socket</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PUB</span><span class="p">)</span>
+    <span class="n">socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&gt; &quot;</span> <span class="o">%</span> <span class="n">who</span><span class="p">)</span>
+        <span class="n">socket</span><span class="o">.</span><span class="n">send_pyobj</span><span class="p">((</span><span class="n">msg</span><span class="p">,</span> <span class="n">who</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;usage: prompt.py &lt;address&gt; &lt;username&gt;&quot;</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Once done, you should open a new shell session and execute this:</p>
+<div class="highlight"><pre>    eval $(docker-machine env dm-pyzmq)
+    docker run -it -v `pwd`:/project oscarmartin/zmq-pyzmq prompt.py &quot;tcp://*:5000&quot; user1
+</pre></div>
+
+
+<p>This will create a prompt for entering messages. Do not do anything right now there but keep it open. On the former shell session, execute this:</p>
+<div class="highlight"><pre><span class="x">     C_IP=$(docker inspect --format &#39;</span><span class="cp">{{</span> <span class="nv">.NetworkSettings.IPAddress</span> <span class="cp">}}</span><span class="x">&#39; `docker ps -ql`)</span>
+<span class="x">     docker run -it -v `pwd`:/project oscarmartin/zmq-pyzmq display.py &quot;tcp://$C_IP:5000&quot;</span>
+</pre></div>
+
+
+<p>This will connect to the first <code>prompt</code> docker and will echo what it receives from there, so let's try it. Go back to the session where the prompt was expecting some input and write "Hello World!", like this:</p>
+<div class="highlight"><pre>    user1&gt; Hello World!
+</pre></div>
+
+
+<p>If you go to the session where <code>display</code> docker is running on, you will hopefully see the message too:</p>
+<div class="highlight"><pre><span class="n">user1</span><span class="o">:</span> <span class="n">Hello</span> <span class="n">World</span><span class="o">!</span>
+</pre></div>
+
+
+<p>So this is the environment I will use to learn about ZeroMQ.</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://twitter.com/cappa_22"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                <li class="list-group-item"><a href="https://github.com/oscar-martin/"><i class="fa fa-github-square fa-lg"></i> GitHub</a></li>
+              </ul>
+            </li>
+
+
+
+            <li class="list-group-item"><a href="/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group " id="tags">
+                </ul>
+            </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 omartin
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>
