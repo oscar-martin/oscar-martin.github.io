@@ -116,17 +116,18 @@ Create a <code>virtualbox</code> instance with docker engine running on it. Insi
 
 <p>This way, each <code>docker</code> command will be using the docker engine running on the VM named <code>dm-pyzmq</code>.</p>
 <h4>Test the environment</h4>
-<p>As already said, we are going to use an image called <a href="https://hub.docker.com/r/oscarmartin/zmq-pyzmq/">zmq-pyzmq</a>. We also need to create a couple of simple python programs that I am going to use for testing the workflow. I am going to use this basic <a href="https://github.com/zeromq/pyzmq/tree/master/examples/chat">chat program</a>. In order to make things easier, I am going to write them here. So first, create a new folder and a couple of files, like this:</p>
-<div class="highlight"><pre>    cd pyzmq-test
-    touch display.py
-    touch prompt.py
+<p>As already said, we are going to use an image called <a href="https://hub.docker.com/r/oscarmartin/zmq-pyzmq/">zmq-pyzmq</a>. We also need to create a couple of simple python programs that I am going to use for testing the workflow. I am going to use this basic <a href="https://github.com/zeromq/pyzmq/tree/master/examples/chat">chat program</a>. In order to make things easier, I am going to write them here. So first, create a new folder like this:</p>
+<div class="highlight"><pre>    mkdir pyzmq-test
+    cd pyzmq-test
 </pre></div>
 
 
-<p>The content of the files should be:</p>
-<ul>
-<li>display.py:</li>
-</ul>
+<p>Now, let's create a simple program for displaying messages received from a socket.</p>
+<div class="highlight"><pre>    cat &gt; display.py
+</pre></div>
+
+
+<p>Copy and paste this code into the shell console and press <code>CTRL+D</code> when done.</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">addrs</span><span class="p">):</span>
@@ -151,9 +152,12 @@ Create a <code>virtualbox</code> instance with docker engine running on it. Insi
 </pre></div>
 
 
-<ul>
-<li>prompt.py:</li>
-</ul>
+<p>The other program to be created will prompt you to enter messages.</p>
+<div class="highlight"><pre>    cat &gt; prompt.py
+</pre></div>
+
+
+<p>Copy and paste this code into the shell console and press <code>CTRL+D</code> when done.</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">who</span><span class="p">):</span>
@@ -176,15 +180,19 @@ Create a <code>virtualbox</code> instance with docker engine running on it. Insi
 </pre></div>
 
 
-<p>Once done, you should open a new shell session and execute this:</p>
+<p>Once done, you should open a new shell session because we will need two programs to be launched. First thing to do will be to create a private network for them to be able to connect. And we will use docker for that too:</p>
+<div class="highlight"><pre>    docker network create my_net
+</pre></div>
+
+
+<p>This will allow us to use container names for <em>connecting</em> one container to the other.</p>
 <div class="highlight"><pre>    eval $(docker-machine env dm-pyzmq)
-    docker run -it -v `pwd`:/project oscarmartin/zmq-pyzmq prompt.py &quot;tcp://*:5000&quot; user1
+    docker run -it --name prompt --net my_net -v `pwd`:/project oscarmartin/zmq-pyzmq prompt.py &quot;tcp://*:5000&quot; user1
 </pre></div>
 
 
 <p>This will create a prompt for entering messages. Do not do anything right now there but keep it open. On the former shell session, execute this:</p>
-<div class="highlight"><pre><span class="x">     C_IP=$(docker inspect --format &#39;</span><span class="cp">{{</span> <span class="nv">.NetworkSettings.IPAddress</span> <span class="cp">}}</span><span class="x">&#39; `docker ps -ql`)</span>
-<span class="x">     docker run -it -v `pwd`:/project oscarmartin/zmq-pyzmq display.py &quot;tcp://$C_IP:5000&quot;</span>
+<div class="highlight"><pre>    docker run -it --net my_net -v `pwd`:/project oscarmartin/zmq-pyzmq display.py &quot;tcp://prompt:5000&quot;
 </pre></div>
 
 
