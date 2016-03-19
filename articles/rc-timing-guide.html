@@ -92,9 +92,9 @@ omartin.me            </a>
 </footer><!-- /.post-info -->                    </div>
                 </div>
                 <h1>Introduction</h1>
-<p>RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations where you want to practice and the local timing system is not available. RC Timing will use voice synthesiser during timing sessions so you connect the iOS device to a bluetooth speaker and you will know about your last time, your opponent last time, your best personal time and the overall best time.</p>
-<p>It uses the main (back) camera for tracking cars’ colours. It is quite important that you learn how to properly setup both the car and the track configuration in order to get good results. RC Timing internally works by firing a timer once a configured color is on the screen during timing sessions. So there are a couple of settings that must be configure to avoid as many errors as possible giving the changing ambient luminosity and other cars that may be on track simultaneously.</p>
-<p>RC Timing supports up to 4 simultaneously cars to be tracked during a timing session but those cars must have different body car colours. It is recommended that the body car painting not to be too much scattered with different colours/stickers. The best choice would be to have a unique color for the whole car but it also works great if the front or rear end of the car body has a unique color. IT IS IMPORTANT TO AVOID USING <strong>WHITE</strong> AS THE COLOR TO BE TRACKED: the reason for this is that lots of reflections contain white color and they make the sensors to lose accuracy. You can also stick a coloured vinyl covering a big portion of the body car and use that color to be tracked.</p>
+<p>RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations where you want to practice and the local timing system is not available. RC Timing will use voice synthesizer during timing sessions so you can connect the iOS device to a bluetooth speaker and you will know about your last time, your opponent last time, your best personal time and the overall best time.</p>
+<p>It uses the main (back) camera for tracking cars’ colors. It is quite important that you learn how to properly setup both the car and the track configuration in order to get good results. RC Timing internally works by firing a timer once a configured color is detected on the screen during timing sessions. So there are a couple of settings that must be configured to avoid as many errors as possible given the ambient luminosity changes and the fact that other cars may also affect the detection when running on track simultaneously.</p>
+<p>RC Timing supports up to 10 simultaneously cars to be tracked during a timing session but those cars should have different body car colors. It is recommended that the body car painting not to be too much scattered with different colors/stickers. The best choice would be to have a unique color for the whole car but it also works great if the front or rear end of the car body has a unique color. IT IS IMPORTANT TO AVOID USING <strong>WHITE</strong> AS THE COLOR TO BE TRACKED: the reason for this is that lots of reflections contain white color and they make the sensors to lose accuracy. You can also stick a colored vinyl covering a big portion of the body car and use that color to be tracked.</p>
 <p>All logged laps are stored and can be later seen per car profile and track so you can have a history of all tracked laps in a given track.</p>
 <p>Main view presents three sections:</p>
 <p><img alt="Alt Text" src="/images/Main.png" /></p>
@@ -102,19 +102,19 @@ omartin.me            </a>
 <li>ACTIVE CARS:
 Cars in this section will be active for the Timing Session so they will be tracked.</li>
 <li>TRACKING:
-It lets you choose the track where you are racing on. Read on the section ‘How to configure a track” for further instructions.</li>
+It lets you choose the track where you are racing on. Read on the section <code>How to configure a track</code> for further instructions.</li>
 <li>REGISTERED CARS:
-Cars in this section will contain the rest of registered cars in the application and they are not active for tracking.</li>
+Cars in this section will contain the rest of registered cars in the App and they are not active for tracking.</li>
 </ul>
-<p>Tapping the ‘+’ button lets you create a car profile. A car profile is composed of a Driver name and a car name. The Driver name is used by the voice synthesiser to tell about the lap times during timing session so you should choose a proper name for that. Car name is only used for you to refer to the specific color and threshold settings for a given car. More on this in “How to configure a car” section.</p>
+<p>Tapping the <code>+</code> button lets you create a car profile. A car profile is composed of a Driver name and a car name. The Driver name is used by the voice synthesizer to tell about the lap times during timing session so you should choose a proper name for that. Car name is only used for you to refer to the specific color and threshold settings for a given car. More on this in <code>How to configure a car</code> section.</p>
 <p><img alt="Alt Text" src="/images/Toolbar.png" /></p>
-<p>Tapping in the ‘Edit’ button lets you move cars between ACTIVE CARS and REGISTERED CARS sections. Note that it is only allowed to have 4 active cars if you have bought the unlock.</p>
-<p>You can also see/edit the car configuration by tapping on the ‘Car’ rows.</p>
+<p>Tapping in the <code>Edit</code> button lets you move cars between ACTIVE CARS and REGISTERED CARS sections. Note that it is only allowed to have 10 active cars if you have bought the unlock.</p>
+<p>You can also see/edit the car configuration by tapping on the <code>Car</code> rows.</p>
 <p><img alt="Alt Text" src="/images/CarRow.png" /></p>
 <h2>How to configure a Track</h2>
-<p>As described above, RC Timing works by tracking a colour. There are situations where there are other cars with similar body car colours than your car. You can try to use another body car with a different color. You can stick a vinyl with a different color over the body car too. But RC Timing offers a setting that tries to avoid that similar coloured car to affect your lap times. The setting is 'Min Lap Time’ and what it does is to not count for lap times below that number of seconds configured by that setting. So if your local track best lap time is 17.2 seconds, you can configure that setting to be between 16.5 - 17.0 seconds. That would mean that once your car passes over the place where the iOS device is tracking the session it won’t be tracking that color until that number of seconds elapses. This is also important as it helps not draining your battery.</p>
+<p>As described above, RC Timing works by tracking a color. There are situations where there are other cars with similar body car colors than your car. You can try to use another body car with a different color. You can stick a vinyl with a different color over the body car too. But RC Timing offers a setting that tries to avoid that similar colored car to affect your lap times. The setting is <code>Min Lap Time</code> and what it does is to not count for lap times below the number of seconds configured by that setting. So if your local track's best lap time is 17.2 seconds, you can configure that setting to be between 16.5 - 17.0 seconds. That would mean that once your car passes over the place where the iOS device is tracking the session it won’t be tracking that specific car until that number of seconds elapses. This is also important as it helps not draining your battery.</p>
 <h2>How to configure a Car</h2>
-<p>Once you have create a car profile and you have set the driver name and car name, it is time to go to the ‘Configuration’ view. There you can setup the color to be tracked and a couple of settings that are used during the timing session.</p>
+<p>Once you have create a car profile and you have set the driver name and car name, it is time to go to the <code>Configuration</code> view. There you can setup the color to be tracked and a couple of settings that are used during the timing session.</p>
 <p>First thing to do is to place the iOS device at the place in the track where you want to have the start/finish line. Ideally the iOS device should be mounted above the track with the camera pointing obliquely to the track. It is recommended to use a mobile holder.</p>
 <p>Next images should the optimal locations for the iOS device:</p>
 <h4>Indoor/outdoor tracks:</h4>
@@ -132,27 +132,29 @@ Cars in this section will contain the rest of registered cars in the application
 <li>You should avoid placing the camera facing the sunlights</li>
 </ul>
 <p>Once the mount point is ok, you should place the car in the track that can be seen in the camera view and place it as far as possible from the mount point.</p>
-<p>Then you should pick the color of the car that can be seen with the camera view inside the ‘Configuration’ view by tapping and dragging the finder over the camera view. Once you have chosen the right color of the car, you need to move to the ’Threshold’ view.</p>
+<p>Then you should pick the color of the car that can be seen with the camera view inside the <code>Configuration</code> view by tapping and dragging the finger over the camera view. Once you have chosen the right color of the car, you need to move to the <code>Threshold</code> view.</p>
 <p>There you can basically setup to things:</p>
 <ul>
 <li><strong>Color Tolerance:</strong> this controls how accurate the color needs to be in order to consider it as a match.</li>
-<li><strong>Trigger Value:</strong> this controls how much color must be on detected on the screen in order to fire the event of a car has been detected.</li>
+<li><strong>Trigger Value:</strong> this controls how much color must be detected on the screen in order to fire the <code>detected car</code> event.</li>
 </ul>
-<p>The procedure to set this up is to first tweak the Color Tolerance up to the point you clearly see only the part of the car colored with the chosen color. No less, no more.</p>
+<p>The procedure to set this up is first to tweak the Color Tolerance up to the point you clearly see only the part of the car colored with the chosen color. No less, no more.</p>
 <p><img alt="Alt Text" src="/images/tolerance.png" /></p>
-<p>Then, press the button ‘Autoadjust’ that will calculate the appropriated Trigger Value to use, but you can also tweak it manually if desired. This view shows a ‘Trigger Probes’ which is green-colorer when the car is detected and it is no coloured if the car is not detected. So you can tweak that settings in order to control the sensors. You should avoid to set the Trigger Value too high as it then will do false detections. You should also avoid to set that setting to low because it could not detect your car at all. So it is recommended initially to start with the value adjusted after pressing the ‘Autoadjust’ button.</p>
-<p>Summary:
-<em> Select iOS device mount point
-</em> Mount the iOS device
-<em> Go to car ‘Configuration’ view
-</em> Put the car inside the camera view but as far as possible of the iOS device
-<em> Pick up the car color
-</em> Go to ‘Threshold'
-<em> Adjust Color Tolerance as needed to only see as white the parts of the car with the selected color
-</em> Press ‘Autoadjust’ button. The ’Trigger Probes’ indicator must be then green-colored.
-* Press ’Save'</p>
+<p>Then, press the button <code>Autoadjust</code> that will calculate the appropriate <code>Trigger Value</code> to use, but you can also tweak it manually if desired. This view shows a <code>Trigger Probes</code> which is green-colored when the car is detected and it is no colored if the car is not detected. So you can tweak that settings in order to control the sensor. You should avoid to set the <code>Trigger Value</code> too high as it then will not detect anything. You should also avoid to set that setting to low because it would yield false detections. So it is recommended initially to start with the value adjusted after pressing the <code>Autoadjust</code> button.</p>
+<p>Summary:</p>
+<ul>
+<li>Select iOS device mount point</li>
+<li>Mount the iOS device</li>
+<li>Go to car <code>Configuration</code> view</li>
+<li>Put the car inside the camera view but as far as possible of the iOS device</li>
+<li>Pick up the car color</li>
+<li>Go to <code>Threshold</code></li>
+<li>Adjust Color Tolerance as needed to only see as white the parts of the car with the selected color</li>
+<li>Press <code>Autoadjust</code> button. The <code>Trigger Probes</code> indicator must be then green-colored.</li>
+<li>Press <code>Save</code></li>
+</ul>
 <h2>Timing Session</h2>
-<p>Once you have configured and selected a track and different tracks, you can start a ’Timing Session’. Pressing the ‘Start’ button will start a timing session. The navigation bar goes to green once the session has started. In order to stop it, press the ‘Stop’ button. It is recommended to lower the iOS device brightness during timing session in order to help draining the battery.</p>
+<p>Once you have configured and selected a track and some cars, you can start a <code>Timing Session</code>. Pressing the <code>Start</code> button will start a timing session. The navigation bar goes to green once the session has started. In order to stop it, press the <code>Stop</code> button. It is recommended to lower the iOS device brightness during timing session in order to help draining the battery.</p>
             </div>
             <!-- /.entry-content -->
         </article>
