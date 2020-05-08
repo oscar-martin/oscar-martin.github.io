@@ -14,13 +14,13 @@
 
         <meta name="author" content="omartin" />
         <meta name="keywords" content="zeromq,scala" />
-        <meta name="description" content="I recently read about ZeroMQ and got hooked on it. So I decided to try it out by using Scala. This is just a simple &#34;Hello ZMQ from Scala&#34; tutorial to be run on OS X (El Capitan). It requires the libzmq to be installed and to have either the ..." />
+        <meta name="description" content="I recently read about ZeroMQ and got hooked on it. So I decided to try it out by using Scala. This is just a simple &#34;Hello ZMQ from Scala&#34; tutorial to be run on OS X (El Capitan). It requires the libzmq to be installed and to have either the …" />
 
         <meta property="og:site_name" content="omartin.me" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="0MQ with Scala in OS X (El Capitan)"/>
         <meta property="og:url" content="/articles/0mq-with-scala-in-os-x-el-capitan.html"/>
-        <meta property="og:description" content="I recently read about ZeroMQ and got hooked on it. So I decided to try it out by using Scala. This is just a simple &#34;Hello ZMQ from Scala&#34; tutorial to be run on OS X (El Capitan). It requires the libzmq to be installed and to have either the ..."/>
+        <meta property="og:description" content="I recently read about ZeroMQ and got hooked on it. So I decided to try it out by using Scala. This is just a simple &#34;Hello ZMQ from Scala&#34; tutorial to be run on OS X (El Capitan). It requires the libzmq to be installed and to have either the …"/>
         <meta property="article:published_time" content="2015-12-29" />
             <meta property="article:section" content="misc" />
             <meta property="article:tag" content="zeromq" />
@@ -109,110 +109,110 @@ omartin.me            </a>
 </ul>
 <h4>Make libzmq library</h4>
 <p>You should grab the source code and extract it. We are going to use the latest at the time of writing this post (v4.1.4).</p>
-<div class="highlight"><pre>    mkdir zeromq
-    cd zeromq
-    curl -O http://download.zeromq.org/zeromq-4.1.4.tar.gz
-    tar zxf zeromq-4.1.4.tar.gz
-    cd zeromq-4.1.4
+<div class="highlight"><pre><span></span><span class="err">    mkdir zeromq</span>
+<span class="err">    cd zeromq</span>
+<span class="err">    curl -O http://download.zeromq.org/zeromq-4.1.4.tar.gz</span>
+<span class="err">    tar zxf zeromq-4.1.4.tar.gz</span>
+<span class="err">    cd zeromq-4.1.4</span>
 </pre></div>
 
 
 <p>Then, it should be configured. I am excluding libsodium library because I have not installed it neither I will need it for prototyping purposes:</p>
-<div class="highlight"><pre>    ./configure --without-libsodium
-    make
+<div class="highlight"><pre><span></span><span class="err">    ./configure --without-libsodium</span>
+<span class="err">    make</span>
 </pre></div>
 
 
 <p>Finally, to install it system-wide:</p>
-<div class="highlight"><pre>    sudo make install
+<div class="highlight"><pre><span></span><span class="err">    sudo make install</span>
 </pre></div>
 
 
 <p>That will install the library (libzmq.dylib) in <code>/usr/local/lib</code> and the header files in <code>/usr/local/include</code>. You can now remove the folder <code>zeromq-4.1.4</code> if you like.</p>
-<div class="highlight"><pre>    cd ..
-    rm -rf zeromq-4.1.4
+<div class="highlight"><pre><span></span><span class="err">    cd ..</span>
+<span class="err">    rm -rf zeromq-4.1.4</span>
 </pre></div>
 
 
 <h4>Installing JZMQ Binding</h4>
 <p>Clone the git repo first:</p>
-<div class="highlight"><pre>    git clone https://github.com/zeromq/jzmq.git
-    cd jzmq
+<div class="highlight"><pre><span></span><span class="err">    git clone https://github.com/zeromq/jzmq.git</span>
+<span class="err">    cd jzmq</span>
 </pre></div>
 
 
 <p>Make the binding this way:</p>
-<div class="highlight"><pre>    ./autogen.sh
-    ./configure
-    make
-    sudo make install
+<div class="highlight"><pre><span></span><span class="err">    ./autogen.sh</span>
+<span class="err">    ./configure</span>
+<span class="err">    make</span>
+<span class="err">    sudo make install</span>
 </pre></div>
 
 
 <p>That will install the library (libjzmq.dylib) in <code>/usr/local/lib</code> and will copy <code>zmq.jar</code> file in <code>/usr/local/share/java</code>. You can now remove the folder <code>jzmq</code> if you like.</p>
-<div class="highlight"><pre>    cd ..
-    rm -rf jzmq
+<div class="highlight"><pre><span></span><span class="err">    cd ..</span>
+<span class="err">    rm -rf jzmq</span>
 </pre></div>
 
 
 <h4>Create the "Hello ZQM" application</h4>
 <p>We have already installed all the requisites for being able to write and run (assuming you also have JVM installed) our first Scala project on top of ZMQ. I have create a GitHub repository where you can find the project. It is a <code>sbt</code> project so you should have it installed. Otherwise, you can install it right now by using brew:</p>
-<div class="highlight"><pre>    brew install sbt
+<div class="highlight"><pre><span></span><span class="err">    brew install sbt</span>
 </pre></div>
 
 
 <p>If you typed the commands as they appeared in the tutorial, your working folder should be <code>zeromq</code>. This is not important though but this way it keeps things ordered. Now, clone the git repository and run the client and server. You should open two shell sessions in order to run each of them simultaneously. I am using <a href="https://www.iterm2.com/">iTerm</a> as the terminal application although you can use the one that Apple ships.</p>
 <p>On a first shell script in the <code>zeromq</code> working dir we should clone the git repository and also run sbt:</p>
-<div class="highlight"><pre>    git clone https://github.com/oscar-martin/Hello0MQ.git
-    cd Hello0MQ
-    sbt -Djava.library.path=/usr/local/lib
+<div class="highlight"><pre><span></span><span class="err">    git clone https://github.com/oscar-martin/Hello0MQ.git</span>
+<span class="err">    cd Hello0MQ</span>
+<span class="err">    sbt -Djava.library.path=/usr/local/lib</span>
 </pre></div>
 
 
 <p>It is important to note that we are passing a JVM property (<code>java.library.path</code>) to indicate where to load the library that will be requested to load when ZeroMQ is run. The location is where the command <code>sudo make install</code> in the libzmq step placed it.</p>
 <p>On a second shell script, you need to point to <code>zeromq/Hello0MQ</code> and also launch sbt:</p>
-<div class="highlight"><pre>    cd zeromq/Hello0MQ
-    sbt -Djava.library.path=/usr/local/lib
+<div class="highlight"><pre><span></span><span class="err">    cd zeromq/Hello0MQ</span>
+<span class="err">    sbt -Djava.library.path=/usr/local/lib</span>
 </pre></div>
 
 
 <p>So both shell sessions are showing the sbt prompt. You can list the projects. In any of these sessions, type:</p>
-<div class="highlight"><pre>    &gt; projects
+<div class="highlight"><pre><span></span><span class="err">    &gt; projects</span>
 </pre></div>
 
 
 <p>And the output should look like this:</p>
-<div class="highlight"><pre>[info]     client
-[info]   * root
-[info]     server
+<div class="highlight"><pre><span></span><span class="o">[</span><span class="n">info</span><span class="o">]</span><span class="w">     </span><span class="n">client</span><span class="w"></span>
+<span class="o">[</span><span class="n">info</span><span class="o">]</span><span class="w">   </span><span class="o">*</span><span class="w"> </span><span class="n">root</span><span class="w"></span>
+<span class="o">[</span><span class="n">info</span><span class="o">]</span><span class="w">     </span><span class="n">server</span><span class="w"></span>
 </pre></div>
 
 
 <p>which indicates <code>root</code> is current project. So you should change the current project in both shell sessions:</p>
 <p>In the first shell session:</p>
-<div class="highlight"><pre>    &gt; project server
+<div class="highlight"><pre><span></span><span class="err">    &gt; project server</span>
 </pre></div>
 
 
 <p>In the second shell session:</p>
-<div class="highlight"><pre>    &gt; project client
+<div class="highlight"><pre><span></span><span class="err">    &gt; project client</span>
 </pre></div>
 
 
 <p>Finally, in order to run our "Hello ZMQ from Scala" application, you should just <code>run</code> it, this way:</p>
 <p>In the first shell session (server):</p>
-<div class="highlight"><pre>    &gt; run
+<div class="highlight"><pre><span></span><span class="err">    &gt; run</span>
 </pre></div>
 
 
 <p>In the second shell session (client):</p>
-<div class="highlight"><pre>    &gt; run localhost
+<div class="highlight"><pre><span></span><span class="err">    &gt; run localhost</span>
 </pre></div>
 
 
 <p>It will compile each project and run it. If succeeded, the output should be like this:</p>
 <p>In the first shell session (server):</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">info</span><span class="p">]</span> <span class="n">Running</span> <span class="n">Main</span>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">info</span><span class="p">]</span> <span class="n">Running</span> <span class="n">Main</span>
 <span class="n">Listening</span> <span class="n">on</span> <span class="n">port</span> <span class="mf">5555.</span><span class="p">..</span>
 <span class="n">Received</span> <span class="nl">request</span><span class="p">:</span> <span class="p">[</span><span class="n">Hello</span> <span class="n">ZQM</span><span class="p">]</span>
 <span class="n">Received</span> <span class="nl">request</span><span class="p">:</span> <span class="p">[</span><span class="n">Hello</span> <span class="n">ZQM</span><span class="p">]</span>
@@ -226,7 +226,7 @@ omartin.me            </a>
 
 
 <p>In the second shell session (client):</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">info</span><span class="p">]</span> <span class="n">Running</span> <span class="n">Main</span>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">info</span><span class="p">]</span> <span class="n">Running</span> <span class="n">Main</span>
 <span class="n">Connected</span> <span class="n">to</span> <span class="n">Server</span> <span class="n">on</span> <span class="nl">localhost</span><span class="p">:</span><span class="mi">5555</span>
 <span class="n">Sending</span> <span class="n">request</span> <span class="mi">1</span><span class="o">:</span> <span class="p">[</span><span class="n">Hello</span> <span class="n">ZQM</span><span class="p">]</span>
 <span class="n">Received</span> <span class="n">reply</span> <span class="mi">1</span><span class="o">:</span> <span class="p">[</span><span class="n">from</span> <span class="n">Scala</span><span class="o">!</span><span class="p">]</span>
@@ -277,7 +277,7 @@ omartin.me            </a>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 omartin
+         <div class="col-xs-10">&copy; 2020 omartin
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

@@ -14,13 +14,13 @@
 
         <meta name="author" content="omartin" />
         <meta name="keywords" content="zeromq,scala,docker" />
-        <meta name="description" content="I wrote an article about how to use ZeroMQ with Scala in OS X but there is no need of polluting our system with a bunch of internal libraries which are only required for building ZeroMQ. So I decided to create a docker image with all that process bundled into ..." />
+        <meta name="description" content="I wrote an article about how to use ZeroMQ with Scala in OS X but there is no need of polluting our system with a bunch of internal libraries which are only required for building ZeroMQ. So I decided to create a docker image with all that process bundled into …" />
 
         <meta property="og:site_name" content="omartin.me" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="0MQ with Scala using Docker"/>
         <meta property="og:url" content="/articles/0mq-with-scala-using-docker.html"/>
-        <meta property="og:description" content="I wrote an article about how to use ZeroMQ with Scala in OS X but there is no need of polluting our system with a bunch of internal libraries which are only required for building ZeroMQ. So I decided to create a docker image with all that process bundled into ..."/>
+        <meta property="og:description" content="I wrote an article about how to use ZeroMQ with Scala in OS X but there is no need of polluting our system with a bunch of internal libraries which are only required for building ZeroMQ. So I decided to create a docker image with all that process bundled into …"/>
         <meta property="article:published_time" content="2015-12-29" />
             <meta property="article:section" content="misc" />
             <meta property="article:tag" content="zeromq" />
@@ -106,42 +106,42 @@ The idea is simple, I want to develop my programs in my favorite (local) IDE but
 <h4>Using Docker instead of polluting our environment</h4>
 <p>This guide assumes you have installed <code>docker</code> (I am using v1.9.1) and <code>docker-machine</code> (I am using v0.5.1) running on OS X (El Capitan).</p>
 <p>Create a <code>virtualbox</code> instance with docker engine running on it. Inside the VM we will run our programs:</p>
-<div class="highlight"><pre>    docker-machine create -d virtualbox --virtualbox-memory 4096 --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.9.0/boot2docker.iso dm-zmq
+<div class="highlight"><pre><span></span><span class="err">    docker-machine create -d virtualbox --virtualbox-memory 4096 --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.9.0/boot2docker.iso dm-zmq</span>
 </pre></div>
 
 
 <p>Note: I found a problem with the latest version of the Boot2Docker VM image which caused the creation of our image to get stuck <a href="https://github.com/docker/docker/issues/18180">when setting up the java certificates</a> so the image was not created (I needed to exit the process). Also, I needed to increase the in-memory <code>tmpfs</code> mount point in order to be able to install all the packages needed for the building of the requisites. Otherwise, I was getting <code>E: You don't have enough free space in /var/cache/apt/archives/</code> error.</p>
 <p>Then, set up the shell environment variables to point to the just created docker machine:</p>
-<div class="highlight"><pre>    eval $(docker-machine env dm-zmq)
+<div class="highlight"><pre><span></span><span class="err">    eval $(docker-machine env dm-zmq)</span>
 </pre></div>
 
 
 <p>This way, each <code>docker</code> command will be using the docker engine running on the VM named <code>dm-zmq</code>. As already said, we are going to use an image called <a href="https://hub.docker.com/r/oscarmartin/zmq-sbt/">zmq-sbt</a>. This image has already installed the <code>libzmq</code> and <code>libjzmq</code> libraries in <code>/usr/local/lib</code> and <code>zmq.jar</code> java package in <code>/usr/local/share/java</code>. Those path will be needed in order to create use ZeroMQ in our Scala project (<code>zmq.jar</code> will be required in your <code>build.sbt</code> to declare the dependency).</p>
 <p>In order to test this, I have created a <a href="https://github.com/oscar-martin/Hello0MQ">GitHub repository</a> with a sample project to play with. This project is composed of a couple of process, a client and a server which are using REQ/REP ZeroMQ pattern to exchange messages on port <code>5555</code>. If you look at the <code>build.sbt</code>, you will realize that it is using this declaration:</p>
-<div class="highlight"><pre>unmanagedJars in Compile ++=
-    (file(&quot;/usr/local/share/java/&quot;) * &quot;zmq.jar&quot;).classpath
+<div class="highlight"><pre><span></span><span class="err">unmanagedJars in Compile ++=</span>
+<span class="err">    (file(&quot;/usr/local/share/java/&quot;) * &quot;zmq.jar&quot;).classpath</span>
 </pre></div>
 
 
 <p>which points to the place where <code>zmq.jar</code> is located inside the docker container.</p>
 <p>So, let's start by cloning the git repository:</p>
-<div class="highlight"><pre>    mkdir ~/zmq-sbt
-    cd ~/zmq-sbt
-    git clone https://github.com/oscar-martin/Hello0MQ.git
+<div class="highlight"><pre><span></span><span class="err">    mkdir ~/zmq-sbt</span>
+<span class="err">    cd ~/zmq-sbt</span>
+<span class="err">    git clone https://github.com/oscar-martin/Hello0MQ.git</span>
 </pre></div>
 
 
 <p>Then, we will need two shell sessions, one for running the client and another for the server. Note that the docker image contains an <code>ENTRYPOINT</code> which value is <code>sbt</code> and it contains a JVM property for instructing where to load both ZeroMQ and JZMQ libraries when <code>sbt</code> runs.
 In the first session (you could keep using the same session you have used so far), run this:</p>
-<div class="highlight"><pre>    eval $(docker-machine env dm-zmq)
-    cd ~/zmq-sbt
-    docker run -it --name server -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt -p 5555:5555 oscarmartin/zmq-sbt
+<div class="highlight"><pre><span></span>    <span class="n">eval</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span><span class="o">-</span><span class="n">machine</span> <span class="n">env</span> <span class="n">dm</span><span class="o">-</span><span class="n">zmq</span><span class="p">)</span>
+    <span class="n">cd</span> <span class="o">~/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span>
+    <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">name</span> <span class="n">server</span> <span class="o">-</span><span class="n">v</span> <span class="ss">`pwd`</span><span class="o">/</span><span class="n">Hello0MQ</span><span class="p">:</span><span class="o">/</span><span class="n">project</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">ivy2</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ivy2</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">sbt</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">sbt</span> <span class="o">-</span><span class="n">p</span> <span class="mi">5555</span><span class="p">:</span><span class="mi">5555</span> <span class="n">oscarmartin</span><span class="o">/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span>
 </pre></div>
 
 
 <p>This will create an SBT prompt inside the container where to issue SBT commands. In order to compile and run the server, run:</p>
-<div class="highlight"><pre>    &gt; project server
-    &gt; run
+<div class="highlight"><pre><span></span><span class="err">    &gt; project server</span>
+<span class="err">    &gt; run</span>
 </pre></div>
 
 
@@ -153,42 +153,42 @@ In the first session (you could keep using the same session you have used so far
 </ul>
 <p>The first one is used for the container to be able to work with your project. The other two mapped volumes help us to boot up the container much faster once the ivy2 and sbt cache folder are filled up.</p>
 <p>Create a second shell session and run this:</p>
-<div class="highlight"><pre>    eval $(docker-machine env dm-zmq)
-    cd ~/zmq-sbt
-    docker run -it --name client -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zmq-sbt
+<div class="highlight"><pre><span></span>    <span class="n">eval</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span><span class="o">-</span><span class="n">machine</span> <span class="n">env</span> <span class="n">dm</span><span class="o">-</span><span class="n">zmq</span><span class="p">)</span>
+    <span class="n">cd</span> <span class="o">~/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span>
+    <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">name</span> <span class="n">client</span> <span class="o">-</span><span class="n">v</span> <span class="ss">`pwd`</span><span class="o">/</span><span class="n">Hello0MQ</span><span class="p">:</span><span class="o">/</span><span class="n">project</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">ivy2</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ivy2</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">sbt</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">sbt</span> <span class="n">oscarmartin</span><span class="o">/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span>
 </pre></div>
 
 
 <p>This will create an SBT prompt inside the container where to issue SBT commands. You will need to set the IP address of the VM in where your docker container is running on. Execute this for getting the IP address:</p>
-<div class="highlight"><pre>    docker-machine ip dm-zmq
+<div class="highlight"><pre><span></span><span class="err">    docker-machine ip dm-zmq</span>
 </pre></div>
 
 
 <p>In order to compile and run the client, run:</p>
-<div class="highlight"><pre>    &gt; project client
-    &gt; run &lt;dm-zmq IP&gt;
+<div class="highlight"><pre><span></span><span class="err">    &gt; project client</span>
+<span class="err">    &gt; run &lt;dm-zmq IP&gt;</span>
 </pre></div>
 
 
 <p>You could also have been used the internal IP address of the container as both docker containers live in the same docker engine which means they are visible each other in the docker bridge. Let's try it:</p>
-<div class="highlight"><pre><span class="x">docker inspect --format &#39;</span><span class="cp">{{</span> <span class="nv">.NetworkSettings.IPAddress</span> <span class="cp">}}</span><span class="x">&#39; server</span>
+<div class="highlight"><pre><span></span><span class="x">docker inspect --format &#39;</span><span class="cp">{{</span> <span class="nv">.NetworkSettings.IPAddress</span> <span class="cp">}}</span><span class="x">&#39; server</span>
 </pre></div>
 
 
 <p>So that IP can be used when running the client. In order to test it, you should remove the running containers. Exit them and execute this in one shell session:</p>
-<div class="highlight"><pre>    docker rm -f `docker ps -aq`
+<div class="highlight"><pre><span></span><span class="err">    docker rm -f `docker ps -aq`</span>
 </pre></div>
 
 
 <p>Then, execute the same commands as before but use the container IP instead of the VM IP. You can also remove the port mapping from the <code>server</code> docker container as it is not needed in that test (this means to remove the <code>-p 5555:5555</code> from the command that start the <code>server</code> container). It should work. A more realistic example would be to create two different VM (virtualboxes locally) and to create a docker cluster (Swarm) between them and finally to create a docker-network where to "plug" your docker containers in order for them to use that network.</p>
 <p>Once you execute it, you should exit the docker container and run it again instead of using the same SBT session because otherwise it will throw <code>“UnsatisfiedLinkError: Native Library already loaded in another classloader</code> which seems to be related to the way SBT handles the runtime environment.</p>
 <p>Finally, if all you want to do is to compile your source code, just issue this command:</p>
-<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zmq-sbt compile
+<div class="highlight"><pre><span></span>    <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">t</span> <span class="o">--</span><span class="n">rm</span>  <span class="o">-</span><span class="n">v</span> <span class="ss">`pwd`</span><span class="o">/</span><span class="n">Hello0MQ</span><span class="p">:</span><span class="o">/</span><span class="n">project</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">ivy2</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ivy2</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">sbt</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">sbt</span> <span class="n">oscarmartin</span><span class="o">/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span> <span class="n">compile</span>
 </pre></div>
 
 
 <p>You can use <code>oscarmartin/zmq-sbt</code> image as a SBT process already configured to load ZeroMQ libraries:</p>
-<div class="highlight"><pre>    docker run -t --rm  -v `pwd`/Hello0MQ:/project -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt oscarmartin/zmq-sbt &lt;sbt command&gt;
+<div class="highlight"><pre><span></span>    <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">t</span> <span class="o">--</span><span class="n">rm</span>  <span class="o">-</span><span class="n">v</span> <span class="ss">`pwd`</span><span class="o">/</span><span class="n">Hello0MQ</span><span class="p">:</span><span class="o">/</span><span class="n">project</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">ivy2</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ivy2</span> <span class="o">-</span><span class="n">v</span> <span class="o">~/</span><span class="p">.</span><span class="n">sbt</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">sbt</span> <span class="n">oscarmartin</span><span class="o">/</span><span class="n">zmq</span><span class="o">-</span><span class="n">sbt</span> <span class="o">&lt;</span><span class="n">sbt</span> <span class="n">command</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -227,7 +227,7 @@ In the first session (you could keep using the same session you have used so far
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 omartin
+         <div class="col-xs-10">&copy; 2020 omartin
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

@@ -13,13 +13,13 @@
 <link rel="canonical" href="/articles/rc-timing-guide.html">
 
         <meta name="author" content="omartin" />
-        <meta name="description" content="Introduction RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations ..." />
+        <meta name="description" content="Introduction RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations …" />
 
         <meta property="og:site_name" content="omartin.me" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="RC Timing Guide"/>
         <meta property="og:url" content="/articles/rc-timing-guide.html"/>
-        <meta property="og:description" content="Introduction RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations ..."/>
+        <meta property="og:description" content="Introduction RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations …"/>
         <meta property="article:published_time" content="2016-03-19" />
             <meta property="article:section" content="misc" />
             <meta property="article:author" content="omartin" />
@@ -91,13 +91,13 @@ omartin.me            </a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <h1>Introduction</h1>
+                <h2>Introduction</h2>
 <p>RC Timing is an App that tracks lap times for cars. It can be used in indoor and outdoor tracks and it can be also used for slot racing. This App is not intended to replace your club’s timing system. It is thought to help you in situations where you want to practice and the local timing system is not available. RC Timing will use voice synthesizer during timing sessions so you can connect the iOS device to a bluetooth speaker and you will know about your last time, your opponent last time, your best personal time and the overall best time.</p>
 <p>It uses the main (back) camera for tracking cars’ colors. It is quite important that you learn how to properly setup both the car and the track configuration in order to get good results. RC Timing internally works by firing a timer once a configured color is detected on the screen during timing sessions. So there are a couple of settings that must be configured to avoid as many errors as possible given the ambient luminosity changes and the fact that other cars may also affect the detection when running on track simultaneously.</p>
 <p>RC Timing supports up to 10 simultaneously cars to be tracked during a timing session but those cars should have different body car colors. It is recommended that the body car painting not to be too much scattered with different colors/stickers. The best choice would be to have a unique color for the whole car but it also works great if the front or rear end of the car body has a unique color. IT IS IMPORTANT TO AVOID USING <strong>WHITE</strong> AS THE COLOR TO BE TRACKED: the reason for this is that lots of reflections contain white color and they make the sensors to lose accuracy. You can also stick a colored vinyl covering a big portion of the body car and use that color to be tracked.</p>
 <p>All logged laps are stored and can be later seen per car profile and track so you can have a history of all tracked laps in a given track.</p>
 <p>Main view presents three sections:</p>
-<p><img alt="Alt Text" src="/images/Main.png" /></p>
+<p><img alt="Alt Text" src="/images/Main.png"></p>
 <ul>
 <li>ACTIVE CARS:
 Cars in this section will be active for the Timing Session so they will be tracked.</li>
@@ -107,10 +107,10 @@ It lets you choose the track where you are racing on. Read on the section <code>
 Cars in this section will contain the rest of registered cars in the App and they are not active for tracking.</li>
 </ul>
 <p>Tapping the <code>+</code> button lets you create a car profile. A car profile is composed of a Driver name and a car name. The Driver name is used by the voice synthesizer to tell about the lap times during timing session so you should choose a proper name for that. Car name is only used for you to refer to the specific color and threshold settings for a given car. More on this in <code>How to configure a car</code> section.</p>
-<p><img alt="Alt Text" src="/images/Toolbar.png" /></p>
+<p><img alt="Alt Text" src="/images/Toolbar.png"></p>
 <p>Tapping in the <code>Edit</code> button lets you move cars between ACTIVE CARS and REGISTERED CARS sections. Note that it is only allowed to have 10 active cars if you have bought the unlock.</p>
 <p>You can also see/edit the car configuration by tapping on the <code>Car</code> rows.</p>
-<p><img alt="Alt Text" src="/images/CarRow.png" /></p>
+<p><img alt="Alt Text" src="/images/CarRow.png"></p>
 <h2>How to configure a Track</h2>
 <p>As described above, RC Timing works by tracking a color. There are situations where there are other cars with similar body car colors than your car. You can try to use another body car with a different color. You can stick a vinyl with a different color over the body car too. But RC Timing offers a setting that tries to avoid that similar colored car to affect your lap times. The setting is <code>Min Lap Time</code> and what it does is to not count for lap times below the number of seconds configured by that setting. So if your local track's best lap time is 17.2 seconds, you can configure that setting to be between 16.5 - 17.0 seconds. That would mean that once your car passes over the place where the iOS device is tracking the session it won’t be tracking that specific car until that number of seconds elapses. This is also important as it helps not draining your battery.</p>
 <h2>How to configure a Car</h2>
@@ -119,11 +119,11 @@ Cars in this section will contain the rest of registered cars in the App and the
 <p>Next images should the optimal locations for the iOS device:</p>
 <h4>Indoor/outdoor tracks:</h4>
 <h5>Optimal Position 1</h5>
-<p><img alt="Alt Text" src="/images/File1.png" /></p>
+<p><img alt="Alt Text" src="/images/File1.png"></p>
 <h5>Optimal Position 2</h5>
-<p><img alt="Alt Text" src="/images/File2.png" /></p>
+<p><img alt="Alt Text" src="/images/File2.png"></p>
 <h4>Slot Racing:</h4>
-<p><img alt="Alt Text" src="/images/File3.png" /></p>
+<p><img alt="Alt Text" src="/images/File3.png"></p>
 <p>The next considerations must be taken into account in order to get a successful timing session:</p>
 <ul>
 <li>The camera should cover only the track as much as possible</li>
@@ -139,7 +139,7 @@ Cars in this section will contain the rest of registered cars in the App and the
 <li><strong>Trigger Value:</strong> this controls how much color must be detected on the screen in order to fire the <code>detected car</code> event.</li>
 </ul>
 <p>The procedure to set this up is first to tweak the Color Tolerance up to the point you clearly see only the part of the car colored with the chosen color. No less, no more.</p>
-<p><img alt="Alt Text" src="/images/tolerance.png" /></p>
+<p><img alt="Alt Text" src="/images/tolerance.png"></p>
 <p>Then, press the button <code>Autoadjust</code> that will calculate the appropriate <code>Trigger Value</code> to use, but you can also tweak it manually if desired. This view shows a <code>Trigger Probes</code> which is green-colored when the car is detected and it is no colored if the car is not detected. So you can tweak that settings in order to control the sensor. You should avoid to set the <code>Trigger Value</code> too high as it then will not detect anything. You should also avoid to set that setting to low because it would yield false detections. So it is recommended initially to start with the value adjusted after pressing the <code>Autoadjust</code> button.</p>
 <p>Summary:</p>
 <ul>
@@ -189,7 +189,7 @@ Cars in this section will contain the rest of registered cars in the App and the
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 omartin
+         <div class="col-xs-10">&copy; 2020 omartin
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
